@@ -1,1 +1,192 @@
-index
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>klikzona.github.io/web/</title>
+
+  <meta name="description" content="Anonimni AI umjetnik. Galerija digitalne umjetnosti bez ograničenja, osim pornografije." />
+  <meta name="keywords" content="AI art, anonimni umjetnik, digitalna umjetnost, slike, bitcoin donacije" />
+  <meta name="author" content="Anonimni Umjetnik" />
+  <meta property="og:title" content="Anonimni Umjetnik" />
+  <meta property="og:description" content="AI generirane slike iz svih sfera umjetnosti, osim pornografije." />
+  <meta property="og:image" content="https://klikzona.github.io/web/img/slika1.jpg" />
+  <meta property="og:url" content="https://klikzona.github.io/web/" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      color: #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+      user-select: none;
+    }
+
+    header {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #ccc;
+    }
+
+    header span {
+      color: #e63946;
+    }
+
+    #artwork {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.15);
+      transition: opacity 0.8s ease-in-out;
+      cursor: pointer;
+    }
+
+    #fullscreen-btn {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: rgba(255,255,255,0.1);
+      color: #eee;
+      border: 1px solid #555;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+
+    #fullscreen-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 10px;
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.7;
+      color: #999;
+    }
+
+    .donacija {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .qr {
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      display: none;
+      border: 1px solid #666;
+      border-radius: 8px;
+      background: #111;
+      padding: 6px;
+    }
+
+    .donacija:hover .qr {
+      display: block;
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
+
+    .fade-in {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span>klik</span>zona.github.io/web/
+  </header>
+
+  <img id="artwork" src="" alt="AI umjetnost" />
+
+  <button id="fullscreen-btn">Full Screen</button>
+
+  <footer>
+    <p>Donacije (BTC): 
+      <span class="donacija">
+        <code>141amErn6cotSD1vcT51CQkSWgDnRB9sMi</code>
+        <img src="btc-qr.png" alt="BTC QR" class="qr">
+      </span>
+    </p>
+  </footer>
+
+  <script>
+    const images = ["img/10.png", "img/11.png", "img/12.png", "img/13.png", "img/14.png", "img/15.png", "img/16.png", "img/17.png",
+"img/18.png", "img/19.png", "img/20.png", "img/21.png", "img/22.png", "img/23.png", "img/24.png", "img/25.png",
+"img/26.png", "img/27.png", "img/28.png", "img/29.png", "img/30.png", "img/31.png", "img/32.png", "img/33.png",
+"img/34.png", "img/35.png", "img/36.png", "img/37.png", "img/38.png", "img/39.png", "img/40.png", "img/41.png",
+"img/42.png", "img/43.png", "img/44.png", "img/45.png", "img/46.png", "img/47.png", "img/48.png", "img/49.png",
+"img/50.png", "img/51.png", "img/52.png", "img/53.png", "img/54.png", "img/55.png", "img/56.png", "img/57.png",
+"img/58.png", "img/59.png", "img/60.png", "img/61.png", "img/62.png", "img/63.png", "img/64.png", "img/65.png",
+"img/66.png", "img/67.png", "img/68.png", "img/69.png", "img/70.png", "img/71.png", "img/72.png", "img/73.png",
+"img/74.png", "img/75.png", "img/76.png", "img/77.png", "img/78.png", "img/79.png", "img/80.png", "img/81.png",
+"img/82.png", "img/83.png", "img/84.png", "img/85.png", "img/86.png", "img/87.png", "img/88.png", "img/89.png",
+"img/90.png", "img/91.png", "img/92.png", "img/93.png", "img/94.png", "img/95.png", "img/96.png", "img/97.png",
+"img/98.png", "img/99.png", "img/100.png", "img/101.png"];
+
+    const imgElement = document.getElementById("artwork");
+    let currentImage = "";
+
+    function randomImage() {
+      let newImage;
+      do {
+        newImage = images[Math.floor(Math.random() * images.length)];
+      } while (newImage === currentImage && images.length > 1);
+      currentImage = newImage;
+      imgElement.classList.add("fade-out");
+      setTimeout(() => {
+        imgElement.src = newImage;
+        imgElement.classList.remove("fade-out");
+        imgElement.classList.add("fade-in");
+      }, 300);
+    }
+
+    // Učitaj početnu
+    randomImage();
+
+    // Klik lijevo = nova slika
+    imgElement.addEventListener("click", e => {
+      if (e.button === 0) randomImage();
+    });
+
+    // Desni klik = download slike
+    imgElement.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      const link = document.createElement("a");
+      link.href = imgElement.src;
+      link.download = imgElement.src.split("/").pop();
+      link.click();
+    });
+
+    // Fullscreen funkcija
+    const btn = document.getElementById("fullscreen-btn");
+    btn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  </script>
+
+</body>
+</html>
